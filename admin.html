@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel | Barbearia ZN</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <main class="admin-shell">
+    <section id="loginView" class="auth-card">
+      <img src="public/logo-barbearia.png" alt="Barbearia ZN" class="admin-logo">
+      <span class="eyebrow">ÁREA ADMINISTRATIVA</span>
+      <h1>Entrar no painel</h1>
+      <p>Acesse a agenda da Barbearia ZN.</p>
+      <form id="loginForm">
+        <label>E-mail<input id="email" type="email" autocomplete="username" required placeholder="seu@email.com"></label>
+        <label>Senha<input id="password" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+        <button type="submit" class="primary-btn">ENTRAR</button>
+      </form>
+      <p id="loginError" class="error" aria-live="polite"></p>
+    </section>
+
+    <section id="dashboardView" class="dashboard hidden">
+      <header class="topbar">
+        <div class="brand"><img src="public/logo-barbearia.png" alt="Barbearia ZN"><div><span>PAINEL</span><strong>Barbearia ZN</strong></div></div>
+        <div class="top-actions"><span id="userName"></span><button id="logoutButton" class="ghost-btn">Sair</button></div>
+      </header>
+
+      <div class="content">
+        <div class="page-heading"><div><span class="eyebrow">GESTÃO DE AGENDA</span><h1>Agendamentos</h1></div><button id="refreshButton" class="secondary-btn">↻ Atualizar</button></div>
+
+        <div class="stats">
+          <article><span>Hoje</span><strong id="todayCount">0</strong><small>agendamentos</small></article>
+          <article><span>Confirmados</span><strong id="confirmedCount">0</strong><small>na agenda</small></article>
+          <article><span>Faturamento hoje</span><strong id="todayRevenue">R$ 0,00</strong><small>valor dos serviços</small></article>
+        </div>
+
+        <div class="filters">
+          <label>Data<input id="filterDate" type="date"></label>
+          <label>Barbeiro<select id="filterBarber"><option value="">Todos</option><option>Robson</option><option>Samuel</option><option>Henrique</option></select></label>
+          <label>Status<select id="filterStatus">
+      <option value="">Todos</option>
+      <option value="confirmed">Confirmados</option>
+      <option value="cancelled">Cancelados</option>
+    </select></label>
+        </div>
+
+        <div class="table-card">
+          <div class="table-head"><div><h2>Agenda</h2><span id="tableMeta">Carregando...</span></div></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Horário</th><th>Cliente</th><th>Telefone</th><th>Serviço</th><th>Barbeiro</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody id="appointmentsBody"></tbody></table>
+          </div>
+          <div id="emptyState" class="empty hidden">Nenhum agendamento encontrado.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>
