@@ -746,6 +746,38 @@ footer {
     font-size: 32px;
   }
 }
+
+/* Campo de data dentro do card */
+
+.date-input {
+  width: 100%;
+
+  max-width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+/* Horário selecionado */
+
+.time-option.selected {
+  background: linear-gradient(
+    135deg,
+    #f1c866 0%,
+
+    #b57b19 100%
+  ) !important;
+
+  border-color: #f1c866 !important;
+
+  color: #090806 !important;
+
+  box-shadow:
+    0 8px 22px rgba(181, 123, 25, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16) !important;
+}
+
 /* ========================================
    HORÁRIOS - ESTILO BARBEARIA RV
    ======================================== */

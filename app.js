@@ -637,20 +637,120 @@ function mostrarConfirmacao(servico) {
   document.body.classList.add("confirmation-open");
 }
 
+function resetarAgendamento() {
+  // Limpa os dados do agendamento
+  agendamento = {
+    barbeiro: null,
+    servico: null,
+    preco: null,
+    duracao: null,
+    data: null,
+    horario: null,
+    nome: null,
+    telefone: null,
+  };
+
+  // Limpa os campos do formulário
+  const campoData = document.getElementById("date");
+  const campoNome = document.getElementById("clientName");
+  const campoTelefone = document.getElementById("clientPhone");
+
+  if (campoData) {
+    campoData.value = "";
+  }
+
+  if (campoNome) {
+    campoNome.value = "";
+  }
+
+  if (campoTelefone) {
+    campoTelefone.value = "";
+  }
+
+  // Remove seleções de barbeiro
+  document.querySelectorAll("[data-barber]").forEach(function (item) {
+    item.classList.remove("selected");
+  });
+
+  // Remove seleções de serviço
+  document
+    .querySelectorAll(".services-options .option")
+    .forEach(function (item) {
+      item.classList.remove("selected");
+    });
+
+  // Limpa horários
+  const hours = document.getElementById("hours");
+
+  if (hours) {
+    hours.innerHTML = "";
+  }
+
+  // Reseta texto dos horários
+  const loading = document.getElementById("loading");
+
+  if (loading) {
+    loading.textContent = "Selecione uma data";
+  }
+
+  // Limpa resumo
+  const summary = document.getElementById("summary");
+
+  if (summary) {
+    summary.innerHTML = "";
+  }
+
+  // Limpa mensagens
+  const message = document.getElementById("message");
+
+  if (message) {
+    message.innerHTML = "";
+  }
+
+  // Volta para o primeiro passo
+  document.querySelectorAll(".step").forEach(function (step) {
+    step.classList.remove("active");
+  });
+
+  const step1 = document.getElementById("step1");
+
+  if (step1) {
+    step1.classList.add("active");
+  }
+
+  // Volta para a área de agendamento
+  const booking = document.getElementById("agendamento");
+
+  if (booking) {
+    booking.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+}
+
 function fecharConfirmacao() {
   const modal = document.getElementById("confirmationModal");
+
   if (!modal) return;
 
   modal.classList.remove("show");
   modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("confirmation-open");
+
+  // Reinicia o formulário
+  resetarAgendamento();
 }
 
 function continuarWhatsApp() {
   const servico = servicos[agendamento.servico];
+
   if (!servico) return;
 
   abrirWhatsApp(servico);
+
+  // Fecha a confirmação e reinicia o formulário
+  fecharConfirmacao();
 }
 
 // ========================================
