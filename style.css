@@ -417,23 +417,28 @@ a {
 /* DATA */
 
 .date-input {
-  width: 100%;
+  display: block;
 
-  max-width: 350px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 
   padding: 15px;
 
   background: #151311;
-
   color: white;
 
   border: 1px solid #302c27;
-
   border-radius: 9px;
 
   outline: none;
 
   color-scheme: dark;
+
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+
+  margin: 0;
 }
 
 .date-input:focus {
@@ -735,16 +740,24 @@ footer {
   .hours {
     grid-template-columns: repeat(3, 1fr);
   }
-
   .booking-box {
-    .booking-box {
-      width: 100%;
+    width: 100%;
 
-      max-width: 100%;
+    max-width: 100%;
 
-      overflow: hidden;
-    }
+    overflow: hidden;
   }
+  .date-input {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+
+    margin: 0;
+  }
+
 
   .section-title h2 {
     font-size: 32px;
@@ -755,25 +768,6 @@ footer {
   }
 }
 
-/* Campo de data dentro do card */
-
-.date-input {
-  display: block;
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-  min-width: 0 !important;
-
-  box-sizing: border-box !important;
-
-  -webkit-box-sizing: border-box !important;
-
-  padding: 15px !important;
-
-  margin: 0 !important;
-}
 
 /* Horário selecionado */
 
@@ -901,23 +895,6 @@ footer {
   }
 }
 
-.date-input {
-  display: block;
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-  min-width: 0 !important;
-
-  box-sizing: border-box !important;
-
-  -webkit-box-sizing: border-box !important;
-
-  padding: 15px !important;
-
-  margin: 0 !important;
-}
 
 /* ========================================
    CONFIRMAÇÃO - LOADING DO AGENDAMENTO
@@ -1174,23 +1151,6 @@ body.confirmation-open {
   }
 }
 
-.date-input {
-  display: block;
-
-  width: 100% !important;
-
-  max-width: 100% !important;
-
-  min-width: 0 !important;
-
-  box-sizing: border-box !important;
-
-  -webkit-box-sizing: border-box !important;
-
-  padding: 15px !important;
-
-  margin: 0 !important;
-}
 
 /* ========================================
    MAPA - LOCALIZAÇÃO
