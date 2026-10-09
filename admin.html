@@ -39,13 +39,24 @@
 
         <div class="filters">
           <label>Data<input id="filterDate" type="date"></label>
-          <label>Barbeiro<select id="filterBarber"><option value="">Todos</option><option>Robson</option><option>Samuel</option><option>Henrique</option></select></label>
+          <label>Barbeiro<select id="filterBarber"><option value="">Todos</option><option>Robson</option><option>Samuel</option><option>Toti</option></select></label>
           <label>Status<select id="filterStatus">
       <option value="">Todos</option>
       <option value="confirmed">Confirmados</option>
       <option value="cancelled">Cancelados</option>
     </select></label>
         </div>
+
+        <section id="availabilityManagement" class="table-card hidden" style="padding:20px;margin-bottom:22px">
+          <div class="table-head"><div><h2>Bloqueio de dia</h2><span>Impeça novos agendamentos para um barbeiro em um dia inteiro.</span></div></div>
+          <div class="filters" style="margin-top:16px">
+            <label>Barbeiro<select id="blockBarber"><option>Robson</option><option>Samuel</option><option>Toti</option></select></label>
+            <label>Data<input id="blockDate" type="date"></label>
+            <button id="blockDayButton" class="primary-btn" type="button">Bloquear dia inteiro</button>
+            <button id="unblockDayButton" class="secondary-btn" type="button">Liberar dia</button>
+          </div>
+          <p id="blockStatus" aria-live="polite"></p>
+        </section>
 
         <div class="table-card">
           <div class="table-head"><div><h2>Agenda</h2><span id="tableMeta">Carregando...</span></div></div>

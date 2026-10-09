@@ -57,6 +57,15 @@ async function openDashboard(session) {
     filterBarber.value = profile.barber_name;
     filterBarber.disabled = true;
   }
+  if (profile.role === "owner") {
+    document.getElementById("availabilityManagement").classList.remove("hidden");
+    document.getElementById("blockDate").value = today();
+    document.getElementById("blockDayButton").addEventListener("click", blockDay);
+    document.getElementById("unblockDayButton").addEventListener("click", unblockDay);
+    document.getElementById("blockDate").addEventListener("change", refreshBlockStatus);
+    document.getElementById("blockBarber").addEventListener("change", refreshBlockStatus);
+    await refreshBlockStatus();
+  }
   await loadAppointments(profile);
 }
 
@@ -133,6 +142,44 @@ async function loadAppointments(profile) {
     .forEach((b) =>
       b.addEventListener("click", () => cancelAppointment(b.dataset.id)),
     );
+}
+
+async function refreshBlockStatus() {
+  const date = document.getElementById("blockDate").value;
+  const barber = document.getElementById("blockBarber").value;
+  const status = document.getElementById("blockStatus");
+  if (!date || !barber) { status.textContent = "Escolha barbeiro e data."; return; }
+  const { data, error } = await supabaseClient.from("availability_blocks")
+    .select("id").eq("barber_name", barber).eq("blocked_date", date).maybeSingle();
+  if (error) {
+    status.textContent = "Não foi possível consultar bloqueios. Execute a atualização SQL do projeto no Supabase.";
+    console.error(error); return;
+  }
+  status.textContent = data ? `${barber} está bloqueado(a) em ${formatDate(date)}.` : `Dia liberado para ${barber} em ${formatDate(date)}.`;
+}
+
+async function blockDay() {
+  const barber = document.getElementById("blockBarber").value;
+  const date = document.getElementById("blockDate").value;
+  const status = document.getElementById("blockStatus");
+  if (!date) { status.textContent = "Selecione uma data."; return; }
+  if (!confirm(`Bloquear todos os horários de ${barber} em ${formatDate(date)}? Agendamentos já existentes não serão cancelados.`)) return;
+  const { error } = await supabaseClient.from("availability_blocks").upsert(
+    { barber_name: barber, blocked_date: date }, { onConflict: "barber_name,blocked_date" }
+  );
+  if (error) { status.textContent = "Não foi possível bloquear o dia. Confira se executou o SQL de atualização."; console.error(error); return; }
+  status.textContent = `Dia bloqueado para ${barber} em ${formatDate(date)}. Agendamentos existentes foram preservados.`;
+}
+
+async function unblockDay() {
+  const barber = document.getElementById("blockBarber").value;
+  const date = document.getElementById("blockDate").value;
+  const status = document.getElementById("blockStatus");
+  if (!date) { status.textContent = "Selecione uma data."; return; }
+  const { error } = await supabaseClient.from("availability_blocks").delete()
+    .eq("barber_name", barber).eq("blocked_date", date);
+  if (error) { status.textContent = "Não foi possível liberar o dia. Confira se executou o SQL de atualização."; console.error(error); return; }
+  status.textContent = `Dia liberado para ${barber} em ${formatDate(date)}.`;
 }
 
 async function cancelAppointment(id) {

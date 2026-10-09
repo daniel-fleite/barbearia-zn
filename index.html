@@ -48,49 +48,89 @@
       <div class="services-grid">
         <div class="service-card">
           <span>01</span>
-          <h3>Corte</h3>
-          <p>Máquina, tesoura e acabamento na navalha.</p>
+          <h3>Corte degradê</h3>
+          <p>Corte degradê com acabamento.</p>
           <strong>R$ 45</strong>
           <small>40 min</small>
         </div>
 
         <div class="service-card">
           <span>02</span>
-          <h3>Barba</h3>
-          <p>Toalha quente, óleo e alinhamento.</p>
+          <h3>Corte social</h3>
+          <p>Corte clássico e acabamento.</p>
           <strong>R$ 35</strong>
           <small>40 min</small>
         </div>
 
         <div class="service-card">
           <span>03</span>
-          <h3>Corte + Barba</h3>
-          <p>O combo completo da casa.</p>
-          <strong>R$ 70</strong>
+          <h3>Barba</h3>
+          <p>Aparar e alinhar a barba.</p>
+          <strong>R$ 30</strong>
           <small>40 min</small>
         </div>
 
         <div class="service-card">
           <span>04</span>
-          <h3>Infantil</h3>
-          <p>Atendimento com paciência para os pequenos.</p>
-          <strong>R$ 40</strong>
+          <h3>Corte e sobrancelha</h3>
+          <p>Corte com acabamento na sobrancelha.</p>
+          <strong>R$ 55</strong>
           <small>40 min</small>
         </div>
 
         <div class="service-card">
           <span>05</span>
-          <h3>Sobrancelha</h3>
-          <p>Design e alinhamento da sobrancelha.</p>
-          <strong>R$ 10</strong>
+          <h3>Corte, barba e sobrancelha</h3>
+          <p>Combo completo de corte, barba e sobrancelha.</p>
+          <strong>R$ 80</strong>
           <small>40 min</small>
         </div>
 
         <div class="service-card">
           <span>06</span>
-          <h3>Corte + Sobrancelha</h3>
-          <p>Corte completo com sobrancelha alinhada.</p>
-          <strong>R$ 55</strong>
+          <h3>Sobrancelha</h3>
+          <p>Alinhamento da sobrancelha.</p>
+          <strong>R$ 15</strong>
+          <small>40 min</small>
+        </div>
+
+        <div class="service-card">
+          <span>07</span>
+          <h3>Pezinho</h3>
+          <p>Acabamento do contorno do cabelo.</p>
+          <strong>R$ 20</strong>
+          <small>40 min</small>
+        </div>
+
+        <div class="service-card">
+          <span>08</span>
+          <h3>Luzes preenchida</h3>
+          <p>Luzes com preenchimento.</p>
+          <strong>R$ 100</strong>
+          <small>40 min</small>
+        </div>
+
+        <div class="service-card">
+          <span>09</span>
+          <h3>Luzes alinhada</h3>
+          <p>Luzes com alinhamento.</p>
+          <strong>R$ 80</strong>
+          <small>40 min</small>
+        </div>
+
+        <div class="service-card">
+          <span>10</span>
+          <h3>Relaxamento</h3>
+          <p>Serviço de relaxamento capilar.</p>
+          <strong>R$ 30</strong>
+          <small>40 min</small>
+        </div>
+
+        <div class="service-card">
+          <span>11</span>
+          <h3>Pigmentação</h3>
+          <p>Pigmentação para realçar o acabamento.</p>
+          <strong>R$ 30</strong>
           <small>40 min</small>
         </div>
       </div>
@@ -132,10 +172,10 @@
 
             <button
               class="option"
-              data-barber="Henrique"
-              onclick="selectBarber('Henrique', this)"
+              data-barber="Toti"
+              onclick="selectBarber('Toti', this)"
             >
-              <strong>Henrique</strong>
+              <strong>Toti</strong>
               <small>Barbeiro</small>
             </button>
           </div>
@@ -153,50 +193,90 @@
           <div class="options services-options">
             <button
               class="option"
-              onclick="selectService('Corte', 45, 40, this)"
+              onclick="selectService('Corte degradê', 45, 40, this)"
             >
-              <strong>Corte</strong>
+              <strong>Corte degradê</strong>
               <small>R$ 45 · 40 min</small>
             </button>
 
             <button
               class="option"
-              onclick="selectService('Barba', 35, 40, this)"
+              onclick="selectService('Corte social', 35, 40, this)"
             >
-              <strong>Barba</strong>
+              <strong>Corte social</strong>
               <small>R$ 35 · 40 min</small>
             </button>
 
             <button
               class="option"
-              onclick="selectService('Corte + Barba', 70, 40, this)"
+              onclick="selectService('Barba', 30, 40, this)"
             >
-              <strong>Corte + Barba</strong>
-              <small>R$ 70 · 40 min</small>
+              <strong>Barba</strong>
+              <small>R$ 30 · 40 min</small>
             </button>
 
             <button
               class="option"
-              onclick="selectService('Infantil', 40, 40, this)"
+              onclick="selectService('Corte e sobrancelha', 55, 40, this)"
             >
-              <strong>Infantil</strong>
-              <small>R$ 40 · 40 min</small>
+              <strong>Corte e sobrancelha</strong>
+              <small>R$ 55 · 40 min</small>
             </button>
 
             <button
               class="option"
-              onclick="selectService('Sobrancelha', 10, 40, this)"
+              onclick="selectService('Corte, barba e sobrancelha', 80, 40, this)"
+            >
+              <strong>Corte, barba e sobrancelha</strong>
+              <small>R$ 80 · 40 min</small>
+            </button>
+
+            <button
+              class="option"
+              onclick="selectService('Sobrancelha', 15, 40, this)"
             >
               <strong>Sobrancelha</strong>
-              <small>R$ 10 · 40 min</small>
+              <small>R$ 15 · 40 min</small>
             </button>
 
             <button
               class="option"
-              onclick="selectService('Corte + Sobrancelha', 55, 40, this)"
+              onclick="selectService('Pezinho', 20, 40, this)"
             >
-              <strong>Corte + Sobrancelha</strong>
-              <small>R$ 55 · 40 min</small>
+              <strong>Pezinho</strong>
+              <small>R$ 20 · 40 min</small>
+            </button>
+
+            <button
+              class="option"
+              onclick="selectService('Luzes preenchida', 100, 40, this)"
+            >
+              <strong>Luzes preenchida</strong>
+              <small>R$ 100 · 40 min</small>
+            </button>
+
+            <button
+              class="option"
+              onclick="selectService('Luzes alinhada', 80, 40, this)"
+            >
+              <strong>Luzes alinhada</strong>
+              <small>R$ 80 · 40 min</small>
+            </button>
+
+            <button
+              class="option"
+              onclick="selectService('Relaxamento', 30, 40, this)"
+            >
+              <strong>Relaxamento</strong>
+              <small>R$ 30 · 40 min</small>
+            </button>
+
+            <button
+              class="option"
+              onclick="selectService('Pigmentação', 30, 40, this)"
+            >
+              <strong>Pigmentação</strong>
+              <small>R$ 30 · 40 min</small>
             </button>
           </div>
 

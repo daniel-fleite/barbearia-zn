@@ -46,18 +46,25 @@ Atualmente, a Barbearia ZN oferece:
 
 | Serviço | Preço | Duração |
 |---|---:|---:|
-| Corte | R$ 45,00 | 40 min |
-| Barba | R$ 35,00 | 40 min |
-| Corte + Barba | R$ 70,00 | 40 min |
-| Infantil | R$ 40,00 | 40 min |
-| Sobrancelha | R$ 10,00 | 40 min |
-| Corte + Sobrancelha | R$ 55,00 | 40 min |
+| Corte degradê | R$ 45,00 | 40 min |
+| Corte social | R$ 35,00 | 40 min |
+| Barba | R$ 30,00 | 40 min |
+| Corte e sobrancelha | R$ 55,00 | 40 min |
+| Corte, barba e sobrancelha | R$ 80,00 | 40 min |
+| Sobrancelha | R$ 15,00 | 40 min |
+| Pezinho | R$ 20,00 | 40 min |
+| Luzes preenchida | R$ 100,00 | 40 min |
+| Luzes alinhada | R$ 80,00 | 40 min |
+| Relaxamento | R$ 30,00 | 40 min |
+| Pigmentação | R$ 30,00 | 40 min |
+
+*As durações foram mantidas em 40 minutos, conforme a configuração atual do agendamento, pois foram informados apenas os preços.*
 
 ### Barbeiros
 
 - Robson
 - Samuel
-- Henrique
+- Toti
 
 ---
 
@@ -312,3 +319,15 @@ Algumas funcionalidades que podem ser adicionadas futuramente:
 Projeto desenvolvido como uma aplicação web completa, utilizando tecnologias web fundamentais no frontend e Supabase como backend/BaaS.
 
 **Barbearia ZN — Sistema de Agendamento**
+
+
+## Atualização: horários e bloqueios
+
+- Agendamentos permitidos de domingo a quinta-feira.
+- Segunda a quinta: início às 08:00 e último início às 19:20 (atendimento de 40 minutos até 20:00).
+- Domingo: início às 09:00 e último início às 12:20 (até 13:00).
+- Sexta e sábado não aceitam agendamentos.
+- Barbeiros: Robson, Samuel e Toti.
+- O proprietário pode bloquear/liberar um dia inteiro por barbeiro no painel administrativo. Bloqueios não cancelam agendamentos existentes; esses precisam ser cancelados separadamente se necessário.
+
+**Importante:** antes de publicar os arquivos, execute `supabase-migration-horarios-bloqueios.sql` no SQL Editor do Supabase.

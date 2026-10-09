@@ -32,7 +32,7 @@ const barbeiros = {
     telefone: "15996204775",
   },
 
-  Henrique: {
+  Toti: {
     telefone: "15981260825",
   },
 };
@@ -42,39 +42,69 @@ const barbeiros = {
 // ========================================
 
 const servicos = {
-  Corte: {
-    nome: "Corte",
+  "Corte degradê": {
+    nome: "Corte degradê",
     preco: 45,
     duracao: 40,
   },
 
-  Barba: {
-    nome: "Barba",
+  "Corte social": {
+    nome: "Corte social",
     preco: 35,
     duracao: 40,
   },
 
-  "Corte + Barba": {
-    nome: "Corte + Barba",
-    preco: 70,
+  "Barba": {
+    nome: "Barba",
+    preco: 30,
     duracao: 40,
   },
 
-  Infantil: {
-    nome: "Infantil",
-    preco: 40,
-    duracao: 40,
-  },
-
-  Sobrancelha: {
-    nome: "Sobrancelha",
-    preco: 10,
-    duracao: 40,
-  },
-
-  "Corte + Sobrancelha": {
-    nome: "Corte + Sobrancelha",
+  "Corte e sobrancelha": {
+    nome: "Corte e sobrancelha",
     preco: 55,
+    duracao: 40,
+  },
+
+  "Corte, barba e sobrancelha": {
+    nome: "Corte, barba e sobrancelha",
+    preco: 80,
+    duracao: 40,
+  },
+
+  "Sobrancelha": {
+    nome: "Sobrancelha",
+    preco: 15,
+    duracao: 40,
+  },
+
+  "Pezinho": {
+    nome: "Pezinho",
+    preco: 20,
+    duracao: 40,
+  },
+
+  "Luzes preenchida": {
+    nome: "Luzes preenchida",
+    preco: 100,
+    duracao: 40,
+  },
+
+  "Luzes alinhada": {
+    nome: "Luzes alinhada",
+    preco: 80,
+    duracao: 40,
+  },
+
+  "Relaxamento": {
+    nome: "Relaxamento",
+    preco: 30,
+    duracao: 40,
+  },
+
+  "Pigmentação": {
+    nome: "Pigmentação",
+    preco: 30,
     duracao: 40,
   },
 };
@@ -83,22 +113,29 @@ const servicos = {
 // HORÁRIOS
 // ========================================
 
-const horarios = [
-  "09:00",
-  "09:40",
-  "10:20",
-  "11:00",
-  "11:40",
-  "12:20",
-  "13:00",
-  "13:40",
-  "14:20",
-  "15:00",
-  "15:40",
-  "16:20",
-  "17:00",
-  "17:40",
-];
+function gerarHorarios(data) {
+  if (!data) return [];
+
+  // Datas YYYY-MM-DD são interpretadas localmente para evitar problemas de fuso.
+  const [ano, mes, dia] = data.split("-").map(Number);
+  const diaSemana = new Date(ano, mes - 1, dia).getDay();
+
+  // Domingo a quinta-feira: sexta (5) e sábado (6) não abrem.
+  if (diaSemana === 5 || diaSemana === 6) return [];
+
+  const abertura = diaSemana === 0 ? 9 * 60 : 8 * 60;
+  const fechamento = diaSemana === 0 ? 13 * 60 : 20 * 60;
+  const duracao = 40;
+  const lista = [];
+
+  for (let minutos = abertura; minutos + duracao <= fechamento; minutos += duracao) {
+    const hora = String(Math.floor(minutos / 60)).padStart(2, "0");
+    const minuto = String(minutos % 60).padStart(2, "0");
+    lista.push(`${hora}:${minuto}`);
+  }
+
+  return lista;
+}
 
 // ========================================
 // AGENDAMENTO
@@ -244,8 +281,14 @@ function configurarData() {
   // Quando escolher uma data
   campoData.addEventListener("change", function () {
     agendamento.data = this.value;
-
     agendamento.horario = null;
+
+    const horariosDoDia = gerarHorarios(this.value);
+    if (this.value && horariosDoDia.length === 0) {
+      alert("Os agendamentos são de domingo a quinta-feira. Na sexta e no sábado não há atendimento.");
+      agendamento.data = null;
+      this.value = "";
+    }
 
     carregarHorarios();
   });
@@ -278,10 +321,15 @@ async function carregarHorarios() {
     return;
   }
 
-  // Se Supabase ainda não foi configurado,
-  // mostra os horários normalmente
+  const horariosDoDia = gerarHorarios(agendamento.data);
+  if (horariosDoDia.length === 0) {
+    if (loading) loading.textContent = "Sem atendimento nesta data";
+    return;
+  }
+
+  // Se Supabase ainda não foi configurado, mostra os horários do dia.
   if (!supabaseClient) {
-    mostrarHorarios(horarios, []);
+    mostrarHorarios(horariosDoDia, []);
 
     if (loading) {
       loading.textContent = "Horários disponíveis";
@@ -299,7 +347,7 @@ async function carregarHorarios() {
     if (error) {
       console.error(error);
 
-      mostrarHorarios(horarios, []);
+      mostrarHorarios(horariosDoDia, []);
 
       return;
     }
@@ -308,7 +356,12 @@ async function carregarHorarios() {
       return item.appointment_time;
     });
 
-    mostrarHorarios(horarios, ocupados);
+    if (ocupados.includes("BLOCKED_DAY")) {
+      if (loading) loading.textContent = "Este barbeiro não atende nesta data";
+      return;
+    }
+
+    mostrarHorarios(horariosDoDia, ocupados);
 
     if (loading) {
       loading.textContent = "Horários disponíveis";
@@ -316,7 +369,7 @@ async function carregarHorarios() {
   } catch (erro) {
     console.error(erro);
 
-    mostrarHorarios(horarios, []);
+    mostrarHorarios(horariosDoDia, []);
   }
 }
 
@@ -501,6 +554,12 @@ async function confirmAppointment() {
   if (!agendamento.horario) {
     alert("Selecione um horário.");
 
+    return;
+  }
+
+  const horariosDoDia = gerarHorarios(agendamento.data);
+  if (!horariosDoDia.includes(agendamento.horario)) {
+    alert("A data ou o horário selecionado não está disponível.");
     return;
   }
 
