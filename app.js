@@ -285,7 +285,7 @@ function configurarData() {
 
     const horariosDoDia = gerarHorarios(this.value);
     if (this.value && horariosDoDia.length === 0) {
-      alert("Os agendamentos são de domingo a quinta-feira. Na sexta e no sábado não há atendimento.");
+      alert("Os agendamentos são de domingo a quinta-feira. Na sexta e no sábado o atendimento é feito por ordem de chegada.");
       agendamento.data = null;
       this.value = "";
     }
