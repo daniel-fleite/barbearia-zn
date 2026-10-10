@@ -45,7 +45,7 @@ const servicos = {
   "Corte degradê": {
     nome: "Corte degradê",
     preco: 45,
-    duracao: 40,
+    duracao: 60,
   },
 
   "Corte social": {
@@ -69,7 +69,7 @@ const servicos = {
   "Corte, barba e sobrancelha": {
     nome: "Corte, barba e sobrancelha",
     preco: 80,
-    duracao: 40,
+    duracao: 60,
   },
 
   "Sobrancelha": {
@@ -113,7 +113,7 @@ const servicos = {
 // HORÁRIOS
 // ========================================
 
-function gerarHorarios(data) {
+function gerarHorarios(data, duracaoServico = 40) {
   if (!data) return [];
 
   // Datas YYYY-MM-DD são interpretadas localmente para evitar problemas de fuso.
@@ -125,10 +125,12 @@ function gerarHorarios(data) {
 
   const abertura = diaSemana === 0 ? 9 * 60 : 8 * 60;
   const fechamento = diaSemana === 0 ? 13 * 60 : 20 * 60;
-  const duracao = 40;
+  const duracao = Number(duracaoServico) || 40;
   const lista = [];
 
-  for (let minutos = abertura; minutos + duracao <= fechamento; minutos += duracao) {
+  // Mantém a grade de horários de 40 minutos, mas só oferece início
+  // quando o serviço escolhido termina antes ou exatamente no fechamento.
+  for (let minutos = abertura; minutos + duracao <= fechamento; minutos += 40) {
     const hora = String(Math.floor(minutos / 60)).padStart(2, "0");
     const minuto = String(minutos % 60).padStart(2, "0");
     lista.push(`${hora}:${minuto}`);
@@ -285,7 +287,7 @@ function configurarData() {
 
     const horariosDoDia = gerarHorarios(this.value);
     if (this.value && horariosDoDia.length === 0) {
-      alert("Os agendamentos são de domingo a quinta-feira. Na sexta e no sábado o atendimento é feito por ordem de chegada.");
+      alert("Os agendamentos são de domingo a quinta-feira. Na sexta e no sábado não há atendimento.");
       agendamento.data = null;
       this.value = "";
     }
@@ -321,7 +323,7 @@ async function carregarHorarios() {
     return;
   }
 
-  const horariosDoDia = gerarHorarios(agendamento.data);
+  const horariosDoDia = gerarHorarios(agendamento.data, agendamento.duracao || 40);
   if (horariosDoDia.length === 0) {
     if (loading) loading.textContent = "Sem atendimento nesta data";
     return;
@@ -352,14 +354,25 @@ async function carregarHorarios() {
       return;
     }
 
-    const ocupados = data.map(function (item) {
-      return item.appointment_time;
+    const diaBloqueado = data.some(function (item) {
+      return item.appointment_time === "BLOCKED_DAY";
     });
 
-    if (ocupados.includes("BLOCKED_DAY")) {
+    if (diaBloqueado) {
       if (loading) loading.textContent = "Este barbeiro não atende nesta data";
       return;
     }
+
+    const ocupados = data
+      .filter(function (item) {
+        return item.appointment_time !== "BLOCKED_DAY";
+      })
+      .map(function (item) {
+        return {
+          horario: item.appointment_time,
+          duracao: Number(item.appointment_duration) || 40,
+        };
+      });
 
     mostrarHorarios(horariosDoDia, ocupados);
 
@@ -386,8 +399,21 @@ function mostrarHorarios(listaHorarios, ocupados) {
 
   container.innerHTML = "";
 
+  const duracaoSelecionada = Number(agendamento.duracao) || 40;
+  const minutosDe = function (horario) {
+    const [hora, minuto] = horario.split(":").map(Number);
+    return hora * 60 + minuto;
+  };
+
   listaHorarios.forEach(function (horario) {
-    const ocupado = ocupados.includes(horario);
+    const inicioCandidato = minutosDe(horario);
+    const fimCandidato = inicioCandidato + duracaoSelecionada;
+    const ocupado = ocupados.some(function (reserva) {
+      // Bloqueia horários que se sobreponham a qualquer reserva existente.
+      const inicioReserva = minutosDe(reserva.horario);
+      const fimReserva = inicioReserva + (Number(reserva.duracao) || 40);
+      return inicioCandidato < fimReserva && fimCandidato > inicioReserva;
+    });
 
     const botao = document.createElement("button");
 
@@ -557,7 +583,7 @@ async function confirmAppointment() {
     return;
   }
 
-  const horariosDoDia = gerarHorarios(agendamento.data);
+  const horariosDoDia = gerarHorarios(agendamento.data, agendamento.duracao || 40);
   if (!horariosDoDia.includes(agendamento.horario)) {
     alert("A data ou o horário selecionado não está disponível.");
     return;

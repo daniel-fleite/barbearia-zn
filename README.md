@@ -46,11 +46,11 @@ Atualmente, a Barbearia ZN oferece:
 
 | Serviço | Preço | Duração |
 |---|---:|---:|
-| Corte degradê | R$ 45,00 | 40 min |
+| Corte degradê | R$ 45,00 | 1 hora |
 | Corte social | R$ 35,00 | 40 min |
 | Barba | R$ 30,00 | 40 min |
 | Corte e sobrancelha | R$ 55,00 | 40 min |
-| Corte, barba e sobrancelha | R$ 80,00 | 40 min |
+| Corte, barba e sobrancelha | R$ 80,00 | 1 hora |
 | Sobrancelha | R$ 15,00 | 40 min |
 | Pezinho | R$ 20,00 | 40 min |
 | Luzes preenchida | R$ 100,00 | 40 min |
@@ -58,7 +58,7 @@ Atualmente, a Barbearia ZN oferece:
 | Relaxamento | R$ 30,00 | 40 min |
 | Pigmentação | R$ 30,00 | 40 min |
 
-*As durações foram mantidas em 40 minutos, conforme a configuração atual do agendamento, pois foram informados apenas os preços.*
+*Corte degradê e Corte, barba e sobrancelha têm duração de 1 hora. Os demais serviços têm duração de 40 minutos.*
 
 ### Barbeiros
 
@@ -331,3 +331,8 @@ Projeto desenvolvido como uma aplicação web completa, utilizando tecnologias w
 - O proprietário pode bloquear/liberar um dia inteiro por barbeiro no painel administrativo. Bloqueios não cancelam agendamentos existentes; esses precisam ser cancelados separadamente se necessário.
 
 **Importante:** antes de publicar os arquivos, execute `supabase-migration-horarios-bloqueios.sql` no SQL Editor do Supabase.
+
+
+### Atualização de duração dos serviços
+
+Antes de publicar esta versão, execute `supabase-migration-duracao-servicos.sql` no SQL Editor do Supabase. Ela atualiza a consulta de horários ocupados e impede sobreposição de agendamentos de acordo com a duração do serviço.
