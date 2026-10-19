@@ -57,6 +57,8 @@ Atualmente, a Barbearia ZN oferece:
 | Luzes alinhada | R$ 80,00 | 40 min |
 | Relaxamento | R$ 30,00 | 40 min |
 | Pigmentação | R$ 30,00 | 40 min |
+| Depilação nasal | R$ 15,00 | 20 min |
+| Depilação na orelha | R$ 15,00 | 20 min |
 
 *Corte degradê e Corte, barba e sobrancelha têm duração de 1 hora. Os demais serviços têm duração de 40 minutos.*
 

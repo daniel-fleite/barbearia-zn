@@ -107,6 +107,18 @@ const servicos = {
     preco: 30,
     duracao: 40,
   },
+
+  "Depilação nasal": {
+    nome: "Depilação nasal",
+    preco: 15,
+    duracao: 20,
+  },
+
+  "Depilação na orelha": {
+    nome: "Depilação na orelha",
+    preco: 15,
+    duracao: 20,
+  },
 };
 
 // ========================================

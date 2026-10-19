@@ -67,7 +67,11 @@ to anon, authenticated
 with check (
     extract(dow from appointment_date) between 0 and 4
     and appointment_time >= case when extract(dow from appointment_date) = 0 then time '09:00' else time '08:00' end
-    and appointment_time + interval '40 minutes' <= case when extract(dow from appointment_date) = 0 then time '13:00' else time '20:00' end
+    and appointment_time + case
+        when service_name in ('Depilação nasal', 'Depilação na orelha') then interval '20 minutes'
+        when service_name in ('Corte degradê', 'Corte, barba e sobrancelha') then interval '60 minutes'
+        else interval '40 minutes'
+    end <= case when extract(dow from appointment_date) = 0 then time '13:00' else time '20:00' end
     and not exists (
         select 1 from public.availability_blocks b
         where b.barber_name = appointments.barber_name
@@ -151,23 +155,31 @@ to authenticated
 using (id = auth.uid());
 
 -- RPC segura para o site público consultar somente horários ocupados.
-create or replace function public.get_booked_times(
+drop function if exists public.get_booked_times(text, date);
+
+create function public.get_booked_times(
     p_barber_name text,
     p_appointment_date date
 )
-returns table (appointment_time text)
+returns table (appointment_time text, appointment_duration integer)
 language sql
 security definer
 set search_path = public
 as $$
-    select 'BLOCKED_DAY'::text
+    select 'BLOCKED_DAY'::text, 0
     where exists (
         select 1 from public.availability_blocks b
         where b.barber_name = p_barber_name
           and b.blocked_date = p_appointment_date
     )
     union all
-    select left(a.appointment_time::text, 5)
+    select
+        left(a.appointment_time::text, 5),
+        case
+            when a.service_name in ('Depilação nasal', 'Depilação na orelha') then 20
+            when a.service_name in ('Corte degradê', 'Corte, barba e sobrancelha') then 60
+            else 40
+        end
     from public.appointments a
     where a.barber_name = p_barber_name
       and a.appointment_date = p_appointment_date
